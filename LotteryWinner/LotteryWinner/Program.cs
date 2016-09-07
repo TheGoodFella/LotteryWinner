@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace LotteryWinner
 {
@@ -14,6 +15,8 @@ namespace LotteryWinner
         static private char separator = ',';
 
         static UInt64 attempts = 0;
+
+        static Random rando = new Random();
 
         static void Main(string[] args)
         {
@@ -108,7 +111,7 @@ namespace LotteryWinner
 
         static int[] Draw(int[] myN, int min, int max)
         {
-            Random rand = new Random();
+            
             int[] numsDrawn = new int[myN.Length];
             bool cicle = false;
 
@@ -116,7 +119,10 @@ namespace LotteryWinner
             {
                 do
                 {
-                    int temp = rand.Next(min, max);
+
+                    
+
+                    int temp = rando.Next(min, max);
                     if (Array.IndexOf(numsDrawn, temp) == -1)
                     {
                         numsDrawn[i] = temp;
