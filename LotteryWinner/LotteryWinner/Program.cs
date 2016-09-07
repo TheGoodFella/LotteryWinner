@@ -45,7 +45,7 @@ namespace LotteryWinner
             
 
 
-            Draw(myNumbers, lotteryMin, lotteryMax);
+            Check(myNumbers, lotteryMin, lotteryMax);
 
             Console.ReadKey();
         }
@@ -118,13 +118,12 @@ namespace LotteryWinner
             return n;
         }
 
-        static void Draw(int[] myN, int min, int max)
+        static int[] Draw(int[] myN, int min, int max)
         {
-            Random rand = new Random(new Random().Next());
+            Random rand = new Random();
             int[] numsDrawn = new int[myN.Length];
             bool cicle = false;
 
-            #region  draw
             for (int i = 0; i < numsDrawn.Length; i++)
             {
                 do
@@ -141,39 +140,55 @@ namespace LotteryWinner
                     }
                 } while (cicle);
             }
-            #endregion
 
-            #region  check
-            bool guessed = true;
+            return numsDrawn;
+        }
+
+        static void Check(int[] myN, int min, int max)
+        {
+            bool guessed = false; 
             int partialGuessed = 0;
-            for (int i = 0; i < myN.Length; i++)
+            int[] numsDrawn = null;
+
+            while (!guessed)
             {
-                bool doCicle = true;
-                for (int x = 0; x < numsDrawn.Length && doCicle; x++)
+                numsDrawn = Draw(myN, min, max);
+
+                foreach (var item in numsDrawn)
                 {
-                    if (myN[i] == numsDrawn[x])
+                    Console.Write(item + ", ");
+                }Console.Write("\n");
+
+                IncreaseCounter(); //aaand 1 attempt
+
+                //guessed = true; //I set it to true because of algorithm requirements
+                for (int i = 0; i < myN.Length; i++)
+                {
+                    bool doCicle = true;
+                    for (int x = 0; x < numsDrawn.Length && doCicle; x++)
                     {
-                        guessed = true;  //my number exists in the number drawn, so I can exit the cicle
-                        partialGuessed++;
-                        doCicle = false;
+                        if (myN[i] == numsDrawn[x])
+                        {
+                            guessed = true;  //my number exists in the number drawn, so I can exit the cicle
+                            partialGuessed++;
+                            doCicle = false;
+                        }
+                        else
+                            guessed = false;
                     }
-                    else
-                        guessed = false;
                 }
             }
-            #endregion
-
-
             PrintNumbersDrawnInfo(numsDrawn, guessed, partialGuessed);
+            Console.Write(attempts + " attempt");
         }
 
         static void IncreaseCounter()
         {
             //critical section
-            lock(locker)
-            {
+            //lock(locker)
+            //{
                 attempts++;
-            }
+            //}
         }
     }
 }
