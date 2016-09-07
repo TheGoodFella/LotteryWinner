@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace LotteryWinner
 {
@@ -42,7 +43,13 @@ namespace LotteryWinner
             myNumbers = FillMyNumbers(Prompt("\nchoose your numbers separated by a comma: "));
             myNumbersSize = myNumbers.Length;
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             Check(myNumbers, lotteryMin, lotteryMax);
+
+            sw.Stop();
+            Console.WriteLine("\n\n----- Time elapsed: " + (sw.ElapsedMilliseconds / 1000) + " seconds");
 
             Console.ReadKey();
         }
