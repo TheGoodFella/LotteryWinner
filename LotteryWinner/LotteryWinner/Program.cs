@@ -20,6 +20,8 @@ namespace LotteryWinner
 
         static void Main(string[] args)
         {
+
+            Console.Write(Factorial(6));
             #region variables
             //thread list
             List<Thread> threads = new List<Thread>();
@@ -177,8 +179,27 @@ namespace LotteryWinner
 
         static double LikelyToWin(int min,int max, int amountOfNChose)
         {
-            int range = max - min + 1;
-            return Math.Pow(range, amountOfNChose);
+            double result;
+            double Umin = UInt64.Parse(min.ToString());
+            double Umax = UInt64.Parse(max.ToString());
+            double UamountOfNChose = UInt64.Parse(amountOfNChose.ToString());
+
+            double range = Umax - Umin + 1;
+
+            result = Factorial(range) / ((Factorial(range - UamountOfNChose)) * (Factorial(UamountOfNChose)));
+
+            return result;
+        }
+
+        static double Factorial(double n)
+        {
+            double result = n;
+
+            for (double i = 1; i < n; i++)
+            {
+                result = result * i;
+            }
+            return result;
         }
 
         static void IncreaseCounter()
