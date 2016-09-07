@@ -58,7 +58,7 @@ namespace LotteryWinner
         /// <param name="lotteryMin"></param>
         static void PrintMyNumbersInfo(int[] myNumbers, int lotteryMax, int lotteryMin)
         {
-            //print my numbers
+            Array.Sort(myNumbers);
             Console.WriteLine("\n----------My numbers");
             foreach (var item in myNumbers)
             {
@@ -70,9 +70,15 @@ namespace LotteryWinner
             Console.WriteLine("----------END");
         }
 
+        /// <summary>
+        /// print some information about the drawn
+        /// </summary>
+        /// <param name="numsDrawn"></param>
+        /// <param name="guessed"></param>
+        /// <param name="partialGuessed"></param>
         static void PrintNumbersDrawnInfo(int[] numsDrawn, bool guessed, int partialGuessed)
         {
-            //print my numbers
+            Array.Sort(numsDrawn);
             Console.WriteLine("\n----------numbers drawn");
             Console.WriteLine("numbers drawn: ");
             foreach (var item in numsDrawn)
