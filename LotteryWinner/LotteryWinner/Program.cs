@@ -145,7 +145,7 @@ namespace LotteryWinner
 
         static void Check(int[] myN, int min, int max)
         {
-            Console.WriteLine("Likely To Win: " + LikelyToWin(min, max, myN.Length));
+            Console.WriteLine("Odds: 1 in " + LikelyToWin(min, max, myN.Length));
             Console.WriteLine("Loading...");
             
             int partialGuessed = 0;
