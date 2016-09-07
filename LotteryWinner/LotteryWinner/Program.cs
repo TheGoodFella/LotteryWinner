@@ -40,11 +40,6 @@ namespace LotteryWinner
             myNumbers = FillMyNumbers(Prompt("\nchoose your numbers separated by a comma: "));
             myNumbersSize = myNumbers.Length;
 
-
-            PrintMyNumbersInfo(myNumbers, lotteryMax, lotteryMin);
-            
-
-
             Check(myNumbers, lotteryMin, lotteryMax);
 
             Console.ReadKey();
@@ -56,7 +51,7 @@ namespace LotteryWinner
         /// <param name="myNumbers"></param>
         /// <param name="lotteryMax"></param>
         /// <param name="lotteryMin"></param>
-        static void PrintMyNumbersInfo(int[] myNumbers, int lotteryMax, int lotteryMin)
+        static void PrintMyNumbersInfo(int[] myNumbers, int lotteryMax, int lotteryMin, int[] numsDrawn, int partialGuessed, bool guessed, UInt64 attempts)
         {
             Array.Sort(myNumbers);
             Console.WriteLine("\n----------My numbers");
@@ -68,16 +63,7 @@ namespace LotteryWinner
             Console.WriteLine("max: " + lotteryMax);
             Console.WriteLine("min: " + lotteryMin);
             Console.WriteLine("----------END");
-        }
 
-        /// <summary>
-        /// print some information about the drawn
-        /// </summary>
-        /// <param name="numsDrawn"></param>
-        /// <param name="guessed"></param>
-        /// <param name="partialGuessed"></param>
-        static void PrintNumbersDrawnInfo(int[] numsDrawn, bool guessed, int partialGuessed)
-        {
             Array.Sort(numsDrawn);
             Console.WriteLine("\n----------numbers drawn");
             Console.WriteLine("numbers drawn: ");
@@ -88,6 +74,8 @@ namespace LotteryWinner
             Console.WriteLine("numbers guessed: " + partialGuessed);
             Console.WriteLine("all guessed: " + guessed);
             Console.WriteLine("----------END");
+
+            Console.Write(attempts + " attempts");
         }
 
         /// <summary>
@@ -146,49 +134,61 @@ namespace LotteryWinner
 
         static void Check(int[] myN, int min, int max)
         {
-            bool guessed = false; 
+            Console.WriteLine("Likely To Win: " + LikelyToWin(min, max, myN.Length));
+            Console.WriteLine("Loading...");
+
+            bool guessed = false;
             int partialGuessed = 0;
             int[] numsDrawn = null;
-
-            while (!guessed)
+            while (partialGuessed < myN.Length)
             {
+                numsDrawn = null;
                 numsDrawn = Draw(myN, min, max);
+                //foreach (var item in numsDrawn)
+                //{
+                //    Console.Write(item + ", ");
+                //}
+                //Console.Write("\n");
 
-                foreach (var item in numsDrawn)
-                {
-                    Console.Write(item + ", ");
-                }Console.Write("\n");
+                IncreaseCounter(); //aaand +1 attempt
 
-                IncreaseCounter(); //aaand 1 attempt
+                partialGuessed = 0;
 
-                //guessed = true; //I set it to true because of algorithm requirements
+                bool doCicle = true;
                 for (int i = 0; i < myN.Length; i++)
                 {
-                    bool doCicle = true;
+                    doCicle = true;
                     for (int x = 0; x < numsDrawn.Length && doCicle; x++)
                     {
                         if (myN[i] == numsDrawn[x])
                         {
-                            guessed = true;  //my number exists in the number drawn, so I can exit the cicle
                             partialGuessed++;
                             doCicle = false;
                         }
                         else
+                        {
                             guessed = false;
+                        }
                     }
                 }
             }
-            PrintNumbersDrawnInfo(numsDrawn, guessed, partialGuessed);
-            Console.Write(attempts + " attempt");
+            
+            PrintMyNumbersInfo(myN, max, min, numsDrawn, partialGuessed, guessed, attempts);
+        }
+
+        static double LikelyToWin(int min,int max, int amountOfNChose)
+        {
+            int range = max - min + 1;
+            return Math.Pow(range, amountOfNChose);
         }
 
         static void IncreaseCounter()
         {
             //critical section
-            //lock(locker)
-            //{
+            lock (locker)
+            {
                 attempts++;
-            //}
+            }
         }
     }
 }
