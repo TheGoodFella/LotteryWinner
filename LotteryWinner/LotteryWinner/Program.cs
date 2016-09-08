@@ -45,6 +45,9 @@ namespace LotteryWinner
             myNumbers = FillMyNumbers(Prompt("\nchoose your numbers separated by a comma: "));
             myNumbersSize = myNumbers.Length;
 
+            Console.WriteLine("Odds: 1 in " + LikelyToWin(lotteryMin, lotteryMax, myNumbers.Length));
+            Console.WriteLine("Loading...");
+
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
@@ -83,7 +86,8 @@ namespace LotteryWinner
             Console.WriteLine("numbers guessed: " + partialGuessed);
             Console.WriteLine("----------END");
 
-            Console.Write(attempts + " attempts");
+            Console.WriteLine(attempts + " attempts");
+            Console.WriteLine((attempts/1000000) + " Millions attempts [rounded]");
         }
 
         /// <summary>
@@ -145,8 +149,7 @@ namespace LotteryWinner
 
         static void Check(int[] myN, int min, int max)
         {
-            Console.WriteLine("Odds: 1 in " + LikelyToWin(min, max, myN.Length));
-            Console.WriteLine("Loading...");
+           
             
             int partialGuessed = 0;
             int[] numsDrawn = null;
