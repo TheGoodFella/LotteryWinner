@@ -20,8 +20,8 @@ namespace LotteryWinner
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Version 1.0 - MIT License Copyright (c) 2016 Daniele Galas\n");
 
-            Console.Write(Factorial(6));
             #region variables
             //thread list
             List<Thread> threads = new List<Thread>();
@@ -51,7 +51,7 @@ namespace LotteryWinner
             Check(myNumbers, lotteryMin, lotteryMax);
 
             sw.Stop();
-            Console.WriteLine("\n\n----- Time elapsed: " + (sw.ElapsedMilliseconds / 1000) + " seconds");
+            Console.WriteLine("\n\n----------Time elapsed: " + (sw.ElapsedMilliseconds / 1000) + " seconds");
 
             Console.ReadKey();
         }
